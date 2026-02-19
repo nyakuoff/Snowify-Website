@@ -369,8 +369,8 @@ img {
 }
 
 .hero-logo {
-  width: 100px;
-  height: 100px;
+  width: 140px;
+  height: 140px;
   margin: 0 auto 24px;
   filter: drop-shadow(0 0 30px var(--accent-glow-strong));
   animation: float 6s ease-in-out infinite;
