@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snowify — Free Desktop Music Player</title>
+  <meta name="description" content="Snowify is a free, open-source desktop music player. No ads, no subscriptions. Available for Windows and Linux.">
+  <meta name="keywords" content="Snowify, music player, desktop, free, open-source, Electron, no ads">
+  <meta name="author" content="nyakuoff">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Snowify — Free Desktop Music Player">
+  <meta property="og:description" content="A free, open-source desktop music player with a clean, Spotify-like UI. No ads, no subscriptions.">
+  <meta property="og:image" content="https://raw.githubusercontent.com/nyakuoff/Snowify/main/assets/screenshots/home.png">
+  <meta property="og:url" content="https://nyakuoff.github.io/Snowify-Website/">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Snowify — Free Desktop Music Player">
+  <meta name="twitter:description" content="A free, open-source desktop music player with a clean, Spotify-like UI. No ads, no subscriptions.">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/nyakuoff/Snowify/main/assets/screenshots/home.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/nyakuoff/Snowify/main/assets/logo.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Snowfall canvas -->
+  <canvas id="snowfall"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <img src="https://raw.githubusercontent.com/nyakuoff/Snowify/main/assets/logo.png" alt="Snowify Logo" width="32" height="32">
+        <span>Snowify</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#screenshots">Screenshots</a>
+        <a href="#download">Download</a>
+        <a href="https://github.com/nyakuoff/Snowify" target="_blank" rel="noopener" class="nav-github" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <!-- Mobile menu -->
+    <div class="nav-mobile" id="navMobile">
+      <a href="#features">Features</a>
+      <a href="#screenshots">Screenshots</a>
+      <a href="#download">Download</a>
+      <a href="https://github.com/nyakuoff/Snowify" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Beta — v1.0.0
+      </div>
+      <img src="https://raw.githubusercontent.com/nyakuoff/Snowify/main/assets/logo.png" alt="Snowify Logo" class="hero-logo" width="100" height="100">
+      <h1 class="hero-title">Snowify</h1>
+      <p class="hero-subtitle">
+        Free, open-source desktop music player.<br>
+        <strong>No ads, no subscriptions.</strong> Just music.
+      </p>
+      <div class="hero-actions">
+        <a href="#download" class="btn btn-primary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download
+        </a>
+        <a href="https://github.com/nyakuoff/Snowify" target="_blank" rel="noopener" class="btn btn-secondary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          View on GitHub
+        </a>
+      </div>
+      <div class="hero-preview">
+        <img src="https://raw.githubusercontent.com/nyakuoff/Snowify/main/assets/screenshots/home.png" alt="Snowify Home Screen" class="hero-screenshot" loading="eager">
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Features</span>
+        <h2>Everything you need.<br>Nothing you don't.</h2>
+        <p>A full-featured music player with a clean interface, built for people who just want to listen.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <h3>Millions of Songs</h3>
+          <p>Search and stream from a massive music library with no ads and no subscriptions required.</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          </div>
+          <h3>Synced Lyrics</h3>
+          <p>Follow along with real-time synced lyrics that scroll with the music as you listen.</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          </div>
+          <h3>Smart Queue</h3>
+          <p>When your queue runs out, Snowify keeps the music going by automatically adding similar songs.</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <h3>Playlists</h3>
+          <p>Organize your music with fully customizable playlists, complete with drag and drop support.</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <h3>Artist Pages</h3>
+          <p>Dedicated artist pages with top songs, discography, audience stats, and similar artists.</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z"/></svg>
+          </div>
+          <h3>Discord Rich Presence</h3>
+          <p>Show what you're currently listening to right on your Discord profile.</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 110-14h9.5C21 5 23 7 23 9.5S21 14 18.5 14H9a3.5 3.5 0 010-7h8.5"/></svg>
+          </div>
+          <h3>Cloud Sync</h3>
+          <p>Your library, playlists, and liked songs stay in sync across all your devices automatically.</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+          </div>
+          <h3>Spotify Import</h3>
+          <p>Easily import your existing Spotify playlists into Snowify with no extra setup needed.</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </div>
+          <h3>Themes</h3>
+          <p>Multiple built-in color themes so you can personalize the look to match your style.</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><polygon points="10 9 15 12 10 15 10 9"/></svg>
+          </div>
+          <h3>Music Videos</h3>
+          <p>Watch music videos directly in the app without ever leaving your playlist.</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </div>
+          <h3>Follow Artists</h3>
+          <p>Follow your favorite artists and see their new releases right on your home page.</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01"/><path d="M6 12h12M6 16h8"/></svg>
+          </div>
+          <h3>Keyboard Shortcuts</h3>
+          <p>Full keyboard control for playback, seeking, volume, and search so you never need the mouse.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Screenshots -->
+  <section class="screenshots" id="screenshots">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Screenshots</span>
+        <h2>See it in action.</h2>
+        <p>A clean, modern interface inspired by the best music players. Free and open-source.</p>
+      </div>
+      <div class="screenshots-tabs">
+        <button class="tab-btn active" data-tab="home">Home</button>
+        <button class="tab-btn" data-tab="artist">Artist</button>
+        <button class="tab-btn" data-tab="lyrics">Lyrics</button>
+        <button class="tab-btn" data-tab="playlist">Playlist</button>
+        <button class="tab-btn" data-tab="login">Login</button>
+        <button class="tab-btn" data-tab="discord-rpc">Discord RPC</button>
+      </div>
+      <div class="screenshots-viewer" data-animate>
+        <div class="screenshot-frame">
+          <div class="frame-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <img id="screenshotImg" src="https://raw.githubusercontent.com/nyakuoff/Snowify/main/assets/screenshots/home.png" alt="Snowify Home Screen" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download -->
+  <section class="download" id="download">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Download</span>
+        <h2>Get Snowify for free.</h2>
+        <p>Available for Windows and Linux. Free and open-sourced.</p>
+      </div>
+      <div class="download-cards">
+        <div class="download-card" data-animate>
+          <div class="download-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+          </div>
+          <h3>Windows</h3>
+          <p>Windows 10 and 11</p>
+          <a id="downloadWindows" href="https://github.com/nyakuoff/Snowify/releases" class="btn btn-primary btn-download">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Download .exe</span>
+          </a>
+        </div>
+        <div class="download-card" data-animate>
+          <div class="download-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor"><path d="M12.504 0c-.155 0-.311.015-.466.046-1.2.238-2.073 1.238-2.073 2.468v.304a7.456 7.456 0 00-2.465 1.016l-.213-.213a2.482 2.482 0 00-3.506 0 2.482 2.482 0 000 3.506l.213.213A7.456 7.456 0 002.977 9.8H2.514c-1.23 0-2.23.873-2.468 2.073a2.494 2.494 0 002.443 2.931h.463a7.456 7.456 0 001.016 2.465l-.213.213a2.482 2.482 0 000 3.506 2.482 2.482 0 003.506 0l.213-.213a7.456 7.456 0 002.465 1.016v.463a2.494 2.494 0 002.931 2.443c1.2-.238 2.073-1.238 2.073-2.468v-.304a7.456 7.456 0 002.465-1.016l.213.213a2.482 2.482 0 003.506 0 2.482 2.482 0 000-3.506l-.213-.213a7.456 7.456 0 001.016-2.465h.304c1.23 0 2.23-.873 2.468-2.073a2.494 2.494 0 00-2.443-2.931h-.463a7.456 7.456 0 00-1.016-2.465l.213-.213a2.482 2.482 0 000-3.506 2.482 2.482 0 00-3.506 0l-.213.213A7.456 7.456 0 0014.196 2.82V2.514c0-1.23-.873-2.23-2.073-2.468A2.55 2.55 0 0012.504 0zM12 8.01a3.99 3.99 0 110 7.98 3.99 3.99 0 010-7.98z"/></svg>
+          </div>
+          <h3>Linux</h3>
+          <p>AppImage for most distros</p>
+          <a id="downloadLinux" href="https://github.com/nyakuoff/Snowify/releases" class="btn btn-primary btn-download">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Download .AppImage</span>
+          </a>
+        </div>
+      </div>
+      <div class="download-note">
+        <p>
+          <a href="https://github.com/nyakuoff/Snowify/releases" target="_blank" rel="noopener">View all releases on GitHub →</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <img src="https://raw.githubusercontent.com/nyakuoff/Snowify/main/assets/logo.png" alt="Snowify" width="28" height="28">
+          <span>Snowify</span>
+        </div>
+        <div class="footer-links">
+          <a href="https://github.com/nyakuoff/Snowify" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://github.com/nyakuoff/Snowify/issues" target="_blank" rel="noopener">Report a Bug</a>
+          <a href="https://github.com/nyakuoff/Snowify/releases" target="_blank" rel="noopener">Releases</a>
+        </div>
+      </div>
+      <div class="footer-disclaimer">
+        <p>Snowify is in <strong>beta</strong>. It may contain bugs or unfinished features. Use at your own discretion.</p>
+        <p>This app is for personal and educational use only. It streams content from publicly available sources.</p>
+      </div>
+      <div class="footer-copy">
+        <p>&copy; 2026 Snowify. Open-source under the MIT license.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/script.js"></script>
+</body>
+</html>
