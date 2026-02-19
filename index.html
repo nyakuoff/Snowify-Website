@@ -87,7 +87,7 @@
           View on GitHub
         </a>
       </div>
-      <div class="hero-preview">
+      <div class="hero-preview" data-tilt data-tilt-max="6" data-tilt-speed="400" data-tilt-perspective="2000" data-tilt-scale="1.02" data-tilt-reset="true">
         <img src="https://raw.githubusercontent.com/nyakuoff/Snowify/main/assets/screenshots/home.png" alt="Snowify Home Screen" class="hero-screenshot" loading="eager">
       </div>
     </div>
@@ -225,8 +225,8 @@
         <h2>Get Snowify for free.</h2>
         <p>Available for Windows and Linux. Free and open-sourced.</p>
       </div>
-      <div class="download-cards">
-        <div class="download-card" data-animate>
+      <div class="download-cards" id="downloadCards">
+        <div class="download-card" data-animate data-platform="windows">
           <div class="download-icon">
             <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
           </div>
@@ -237,7 +237,7 @@
             <span>Download .exe</span>
           </a>
         </div>
-        <div class="download-card" data-animate>
+        <div class="download-card" data-animate data-platform="linux">
           <div class="download-icon">
             <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor"><path d="M12.504 0c-.155 0-.311.015-.466.046-1.2.238-2.073 1.238-2.073 2.468v.304a7.456 7.456 0 00-2.465 1.016l-.213-.213a2.482 2.482 0 00-3.506 0 2.482 2.482 0 000 3.506l.213.213A7.456 7.456 0 002.977 9.8H2.514c-1.23 0-2.23.873-2.468 2.073a2.494 2.494 0 002.443 2.931h.463a7.456 7.456 0 001.016 2.465l-.213.213a2.482 2.482 0 000 3.506 2.482 2.482 0 003.506 0l.213-.213a7.456 7.456 0 002.465 1.016v.463a2.494 2.494 0 002.931 2.443c1.2-.238 2.073-1.238 2.073-2.468v-.304a7.456 7.456 0 002.465-1.016l.213.213a2.482 2.482 0 003.506 0 2.482 2.482 0 000-3.506l-.213-.213a7.456 7.456 0 001.016-2.465h.304c1.23 0 2.23-.873 2.468-2.073a2.494 2.494 0 00-2.443-2.931h-.463a7.456 7.456 0 00-1.016-2.465l.213-.213a2.482 2.482 0 000-3.506 2.482 2.482 0 00-3.506 0l-.213.213A7.456 7.456 0 0014.196 2.82V2.514c0-1.23-.873-2.23-2.073-2.468A2.55 2.55 0 0012.504 0zM12 8.01a3.99 3.99 0 110 7.98 3.99 3.99 0 010-7.98z"/></svg>
           </div>
@@ -250,6 +250,9 @@
         </div>
       </div>
       <div class="download-note">
+        <p>
+          <button class="platform-toggle" id="platformToggle">Looking for another platform?</button>
+        </p>
         <p>
           <a href="https://github.com/nyakuoff/Snowify/releases" target="_blank" rel="noopener">View all releases on GitHub →</a>
         </p>
@@ -282,6 +285,7 @@
   </footer>
 
   <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
   <script src="js/script.js"></script>
 </body>
 </html>

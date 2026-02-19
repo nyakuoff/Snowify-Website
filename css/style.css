@@ -17,10 +17,10 @@
   --bg-card: #13131f;
   --bg-card-hover: #191930;
   --bg-nav: rgba(8, 8, 13, 0.8);
-  --accent: #a48ad8;
-  --accent-hover: #b9a2e6;
-  --accent-glow: rgba(164, 138, 216, 0.15);
-  --accent-glow-strong: rgba(164, 138, 216, 0.3);
+  --accent: #bb6eef;
+  --accent-hover: #cc8cf5;
+  --accent-glow: rgba(187, 110, 239, 0.15);
+  --accent-glow-strong: rgba(187, 110, 239, 0.3);
   --text-primary: #e8e8ee;
   --text-secondary: #9090a8;
   --text-muted: #5e5e78;
@@ -421,6 +421,10 @@ img {
     0 0 0 1px var(--border),
     0 20px 60px rgba(0, 0, 0, 0.5),
     0 0 80px var(--accent-glow);
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1),
+              box-shadow 0.4s ease-out;
+  will-change: transform, box-shadow;
 }
 
 .hero-screenshot {
@@ -657,6 +661,48 @@ img {
   justify-content: center;
 }
 
+.download-cards.detected {
+  grid-template-columns: 1fr;
+  max-width: 440px;
+}
+
+.download-cards.detected .download-card {
+  display: none;
+}
+
+.download-cards.detected .download-card.platform-match {
+  display: block;
+}
+
+.download-cards.show-all {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 800px;
+}
+
+.download-cards.show-all .download-card {
+  display: block;
+}
+
+.platform-toggle {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-family: var(--font);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition);
+  padding: 0;
+}
+
+.platform-toggle:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+.platform-toggle.hidden {
+  display: none;
+}
+
 .download-note {
   text-align: center;
   color: var(--text-secondary);
@@ -818,6 +864,10 @@ img {
   }
 
   .download-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .download-cards.show-all {
     grid-template-columns: 1fr;
   }
 

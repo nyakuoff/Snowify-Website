@@ -1,7 +1,3 @@
-/* ============================================
-   Snowify Website — JavaScript
-   ============================================ */
-
 (function () {
   'use strict';
 
@@ -140,6 +136,33 @@
 
   fetchLatestRelease();
 
+  // --- Platform Detection ---
+  (function detectPlatform() {
+    const ua = navigator.userAgent.toLowerCase();
+    const cards = document.getElementById('downloadCards');
+    const toggle = document.getElementById('platformToggle');
+    if (!cards || !toggle) return;
+
+    let platform = null;
+    if (ua.includes('win')) platform = 'windows';
+    else if (ua.includes('linux')) platform = 'linux';
+
+    if (platform) {
+      cards.classList.add('detected');
+      const match = cards.querySelector(`[data-platform="${platform}"]`);
+      if (match) match.classList.add('platform-match');
+
+      toggle.addEventListener('click', () => {
+        cards.classList.remove('detected');
+        cards.classList.add('show-all');
+        toggle.classList.add('hidden');
+      });
+    } else {
+      // Unknown platform, show both
+      toggle.classList.add('hidden');
+    }
+  })();
+
   // --- Snowfall Effect ---
   const canvas = document.getElementById('snowfall');
   const ctx = canvas.getContext('2d');
@@ -214,6 +237,9 @@
   resizeCanvas();
   createParticles();
   drawSnow();
+
+  // --- Hero Screenshot Tilt Effect (VanillaTilt) ---
+  VanillaTilt.init(document.querySelectorAll('[data-tilt]'));
 
   // --- Smooth scroll for anchor links ---
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
