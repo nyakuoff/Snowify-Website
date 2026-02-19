@@ -33,34 +33,90 @@
     });
   });
 
-  // --- Screenshot Tabs ---
-  const tabBtns = document.querySelectorAll('.tab-btn');
+  // --- Screenshot Viewer ---
   const screenshotImg = document.getElementById('screenshotImg');
+  const screenshotLabel = document.getElementById('screenshotLabel');
+  const screenshotFrame = document.getElementById('screenshotFrame');
+  const prevBtn = document.getElementById('carouselPrev');
+  const nextBtn = document.getElementById('carouselNext');
+  const dotsContainer = document.getElementById('carouselDots');
 
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const tab = btn.dataset.tab;
+  const SCREENSHOT_NAMES = ['home', 'artist', 'lyrics', 'playlist', 'login', 'discord-rpc'];
+  const SCREENSHOT_LABELS = ['Home', 'Artist', 'Lyrics', 'Playlist', 'Login', 'Discord RPC'];
+  let current = 0;
+  let autoPlayTimer;
+  const AUTO_INTERVAL = 5000;
 
-      // Update active state
-      tabBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+  // Build dots
+  SCREENSHOT_NAMES.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', `Screenshot ${i + 1}`);
+    dot.addEventListener('click', () => goTo(i));
+    dotsContainer.appendChild(dot);
+  });
 
-      // Swap image with fade
-      screenshotImg.classList.add('loading');
-      const newSrc = `${SCREENSHOTS_BASE}/${tab}.png`;
+  function goTo(index, direction) {
+    if (index === current || transitioning) return;
+    transitioning = true;
+    const dir = direction || (index > current ? 'left' : 'right');
+    const outClass = dir === 'left' ? 'slide-out-left' : 'slide-out-right';
+    const inClass = dir === 'left' ? 'slide-in-left' : 'slide-in-right';
 
+    // Slide out current
+    screenshotImg.classList.add(outClass);
+
+    setTimeout(() => {
+      // Prep new image off-screen
+      const src = `${SCREENSHOTS_BASE}/${SCREENSHOT_NAMES[index]}.png`;
       const img = new Image();
       img.onload = () => {
-        screenshotImg.src = newSrc;
-        screenshotImg.alt = `Snowify ${btn.textContent} Screen`;
-        screenshotImg.classList.remove('loading');
+        screenshotImg.classList.remove(outClass);
+        screenshotImg.classList.add(inClass);
+        screenshotImg.src = src;
+        screenshotImg.alt = `Snowify ${SCREENSHOT_LABELS[index]} Screen`;
+
+        // Force reflow then animate in
+        void screenshotImg.offsetWidth;
+        screenshotImg.classList.remove(inClass);
+        current = index;
+        screenshotLabel.textContent = SCREENSHOT_LABELS[current];
+        updateDots();
+        setTimeout(() => { transitioning = false; }, 300);
       };
-      img.onerror = () => {
-        screenshotImg.classList.remove('loading');
-      };
-      img.src = newSrc;
+      img.src = src;
+    }, 300);
+
+    resetAutoPlay();
+  }
+  let transitioning = false;
+
+  function updateDots() {
+    dotsContainer.querySelectorAll('.carousel-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
     });
+  }
+
+  prevBtn.addEventListener('click', () => {
+    goTo(current > 0 ? current - 1 : SCREENSHOT_NAMES.length - 1, 'right');
   });
+
+  nextBtn.addEventListener('click', () => {
+    goTo(current < SCREENSHOT_NAMES.length - 1 ? current + 1 : 0, 'left');
+  });
+
+  function autoPlay() {
+    autoPlayTimer = setInterval(() => {
+      goTo(current < SCREENSHOT_NAMES.length - 1 ? current + 1 : 0, 'left');
+    }, AUTO_INTERVAL);
+  }
+
+  function resetAutoPlay() {
+    clearInterval(autoPlayTimer);
+    autoPlay();
+  }
+
+  autoPlay();
 
   // --- Scroll Animations (Intersection Observer) ---
   const animatedElements = document.querySelectorAll('[data-animate]');
