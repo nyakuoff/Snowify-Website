@@ -714,10 +714,10 @@ img {
 
 .download-cards {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   margin-bottom: 40px;
-  max-width: 800px;
+  max-width: 1000px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -786,8 +786,8 @@ img {
 }
 
 .download-cards.show-all {
-  grid-template-columns: repeat(2, 1fr);
-  max-width: 800px;
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 1000px;
 }
 
 .download-cards.show-all .download-card {

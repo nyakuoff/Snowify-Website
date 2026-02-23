@@ -164,13 +164,19 @@
       const assets = latest.assets || [];
 
       const windowsAsset = assets.find(a => a.name.endsWith('.exe'));
+      const macAsset = assets.find(a => a.name.endsWith('.dmg'));
       const linuxAsset = assets.find(a => a.name.endsWith('.AppImage'));
 
       const winBtn = document.getElementById('downloadWindows');
+      const macBtn = document.getElementById('downloadMac');
       const linuxBtn = document.getElementById('downloadLinux');
 
       if (windowsAsset && winBtn) {
         winBtn.href = windowsAsset.browser_download_url;
+      }
+
+      if (macAsset && macBtn) {
+        macBtn.href = macAsset.browser_download_url;
       }
 
       if (linuxAsset && linuxBtn) {
@@ -200,7 +206,8 @@
     if (!cards || !toggle) return;
 
     let platform = null;
-    if (ua.includes('win')) platform = 'windows';
+    if (ua.includes('mac')) platform = 'macos';
+    else if (ua.includes('win')) platform = 'windows';
     else if (ua.includes('linux')) platform = 'linux';
 
     if (platform) {
