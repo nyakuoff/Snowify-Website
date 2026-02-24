@@ -717,7 +717,7 @@ img {
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   margin-bottom: 40px;
-  max-width: 1000px;
+  max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -772,6 +772,45 @@ img {
   justify-content: center;
 }
 
+/* Coming Soon cards */
+.download-card-soon {
+  position: relative;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.download-card-soon .download-icon {
+  opacity: 0.4;
+}
+
+.download-card-soon h3,
+.download-card-soon p {
+  opacity: 0.5;
+}
+
+.coming-soon-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(187, 110, 239, 0.15);
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(187, 110, 239, 0.3);
+}
+
+.btn-disabled {
+  background: var(--bg-tertiary, rgba(255,255,255,0.05));
+  color: var(--text-secondary);
+  cursor: default;
+  pointer-events: none;
+  border: 1px solid var(--border);
+}
+
 .download-cards.detected {
   grid-template-columns: 1fr;
   max-width: 440px;
@@ -787,7 +826,7 @@ img {
 
 .download-cards.show-all {
   grid-template-columns: repeat(3, 1fr);
-  max-width: 1000px;
+  max-width: 1100px;
 }
 
 .download-cards.show-all .download-card {

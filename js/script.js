@@ -206,7 +206,9 @@
     if (!cards || !toggle) return;
 
     let platform = null;
-    if (ua.includes('mac')) platform = 'macos';
+    if (ua.includes('iphone') || ua.includes('ipad')) platform = 'ios';
+    else if (ua.includes('android')) platform = 'android';
+    else if (ua.includes('mac')) platform = 'macos';
     else if (ua.includes('win')) platform = 'windows';
     else if (ua.includes('linux')) platform = 'linux';
 
