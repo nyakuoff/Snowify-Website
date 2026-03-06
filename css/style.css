@@ -723,6 +723,7 @@ img {
 }
 
 .download-card {
+  position: relative;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -788,19 +789,39 @@ img {
   opacity: 0.5;
 }
 
+.platform-badge,
 .coming-soon-badge {
   position: absolute;
   top: 16px;
   right: 16px;
-  background: rgba(187, 110, 239, 0.15);
-  color: var(--accent);
   font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: 4px 10px;
   border-radius: 20px;
+}
+
+.coming-soon-badge {
+  background: rgba(187, 110, 239, 0.15);
+  color: var(--accent);
   border: 1px solid rgba(187, 110, 239, 0.3);
+}
+
+.beta-badge {
+  background: rgba(234, 179, 8, 0.15);
+  color: #eab308;
+  border: 1px solid rgba(234, 179, 8, 0.3);
+}
+
+.stable-badge {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.platform-badge:empty {
+  display: none;
 }
 
 .btn-disabled {

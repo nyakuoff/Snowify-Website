@@ -3,6 +3,7 @@
 
   // --- Configuration ---
   const REPO = 'nyakuoff/Snowify';
+  const REPO_ANDROID = 'nyakuoff/Snowify-Android';
   const SCREENSHOTS_BASE = `https://raw.githubusercontent.com/${REPO}/main/assets/screenshots`;
   const SCREENSHOTS = ['home', 'artist', 'lyrics', 'playlist', 'login', 'discord-rpc'];
 
@@ -151,15 +152,14 @@
   }
 
   // --- Dynamic Download Links (GitHub Releases API) ---
-  async function fetchLatestRelease() {
+  async function fetchDesktopRelease() {
     try {
       const res = await fetch(`https://api.github.com/repos/${REPO}/releases`);
-      if (!res.ok) return;
+      if (!res.ok) return null;
 
       const releases = await res.json();
-      if (!releases.length) return;
+      if (!releases.length) return null;
 
-      // Find the latest release (first in the array)
       const latest = releases[0];
       const assets = latest.assets || [];
 
@@ -171,32 +171,72 @@
       const macBtn = document.getElementById('downloadMac');
       const linuxBtn = document.getElementById('downloadLinux');
 
-      if (windowsAsset && winBtn) {
-        winBtn.href = windowsAsset.browser_download_url;
-      }
+      if (windowsAsset && winBtn) winBtn.href = windowsAsset.browser_download_url;
+      if (macAsset && macBtn) macBtn.href = macAsset.browser_download_url;
+      if (linuxAsset && linuxBtn) linuxBtn.href = linuxAsset.browser_download_url;
 
-      if (macAsset && macBtn) {
-        macBtn.href = macAsset.browser_download_url;
-      }
-
-      if (linuxAsset && linuxBtn) {
-        linuxBtn.href = linuxAsset.browser_download_url;
-      }
-
-      // Update version badge
-      const badge = document.querySelector('.hero-badge');
-      if (badge && latest.tag_name) {
-        const version = latest.tag_name.replace(/^v/, '');
-        const isPrerelease = latest.prerelease;
-        badge.innerHTML = `<span class="badge-dot"></span>${isPrerelease ? 'Beta' : 'Stable'} · v${version}`;
-      }
+      return latest;
     } catch (e) {
-      // Silently fail, fallback hrefs point to the releases page
-      console.debug('Could not fetch latest release:', e.message);
+      console.debug('Could not fetch desktop release:', e.message);
+      return null;
     }
   }
 
-  fetchLatestRelease();
+  async function fetchAndroidRelease() {
+    try {
+      const res = await fetch(`https://api.github.com/repos/${REPO_ANDROID}/releases`);
+      if (!res.ok) return null;
+
+      const releases = await res.json();
+      if (!releases.length) return null;
+
+      const latest = releases[0];
+      const assets = latest.assets || [];
+      const apkAsset = assets.find(a => a.name.endsWith('.apk'));
+      const androidBtn = document.getElementById('downloadAndroid');
+      const androidBadge = document.getElementById('androidBadge');
+
+      if (apkAsset && androidBtn) androidBtn.href = apkAsset.browser_download_url;
+
+      // Show Beta or Stable badge on card
+      if (androidBadge) {
+        if (latest.prerelease) {
+          androidBadge.textContent = 'Beta';
+          androidBadge.className = 'platform-badge beta-badge';
+        } else {
+          androidBadge.textContent = 'Stable';
+          androidBadge.className = 'platform-badge stable-badge';
+        }
+      }
+
+      return latest;
+    } catch (e) {
+      console.debug('Could not fetch Android release:', e.message);
+      return null;
+    }
+  }
+
+  async function fetchAllReleases() {
+    const [desktop, android] = await Promise.all([fetchDesktopRelease(), fetchAndroidRelease()]);
+
+    // Update hero badge with desktop version
+    const badge = document.querySelector('.hero-badge');
+    if (badge && desktop && desktop.tag_name) {
+      const dVersion = desktop.tag_name.replace(/^v/, '');
+      const dLabel = desktop.prerelease ? 'Beta' : 'Stable';
+      let text = `Desktop: ${dLabel} v${dVersion}`;
+
+      if (android && android.tag_name) {
+        const aVersion = android.tag_name.replace(/^v/, '');
+        const aLabel = android.prerelease ? 'Beta' : 'Stable';
+        text += ` · Android: ${aLabel} v${aVersion}`;
+      }
+
+      badge.innerHTML = `<span class="badge-dot"></span>${text}`;
+    }
+  }
+
+  fetchAllReleases();
 
   // --- Platform Detection ---
   (function detectPlatform() {
