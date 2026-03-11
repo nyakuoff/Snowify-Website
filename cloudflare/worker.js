@@ -84,27 +84,37 @@ const INNERTUBE_CTX = {
   },
 };
 
-async function innertubeBrowse(browseId) {
-  try {
-    const res = await fetch(
-      `https://music.youtube.com/youtubei/v1/browse?key=${INNERTUBE_KEY}&prettyPrint=false`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36',
-          'Origin': 'https://music.youtube.com',
-          'Referer': 'https://music.youtube.com/',
-          'X-YouTube-Client-Name': '67',
-          'X-YouTube-Client-Version': '1.20240101.01.00',
-        },
-        body: JSON.stringify({ context: INNERTUBE_CTX, browseId }),
-        cf: { cacheEverything: true, cacheTtl: 3600 },
-      }
-    );
-    if (!res.ok) return null;
-    return await res.json();
-  } catch (_) { return null; }
+async function innertubeBrowse(browseId, pageType) {
+  const body = { context: INNERTUBE_CTX, browseId };
+  if (pageType) {
+    body.browseEndpointContextSupportedConfigs = {
+      browseEndpointContextMusicConfig: { pageType },
+    };
+  }
+  const opts = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36',
+      'Origin': 'https://music.youtube.com',
+      'Referer': 'https://music.youtube.com/',
+      'X-YouTube-Client-Name': '67',
+      'X-YouTube-Client-Version': '1.20240101.01.00',
+    },
+    body: JSON.stringify(body),
+    cf: { cacheEverything: true, cacheTtl: 3600 },
+  };
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const res = await fetch(
+        `https://music.youtube.com/youtubei/v1/browse?key=${INNERTUBE_KEY}&prettyPrint=false`,
+        opts
+      );
+      if (!res.ok) { if (attempt === 0) continue; return null; }
+      return await res.json();
+    } catch (_) { if (attempt === 0) continue; return null; }
+  }
+  return null;
 }
 
 // Pick the largest thumbnail from a YTM thumbnails array
@@ -199,20 +209,23 @@ async function handleArtist(artistId) {
   let subtitle = 'Listen on Snowify';
   let image    = LOGO_URL;
 
-  const data = await innertubeBrowse(artistId);
+  const data = await innertubeBrowse(artistId, 'MUSIC_PAGE_TYPE_ARTIST');
   if (data) {
     const hdr = data?.header?.musicImmersiveHeaderRenderer
-             ?? data?.header?.musicVisualHeaderRenderer;
+             ?? data?.header?.musicVisualHeaderRenderer
+             ?? data?.header?.musicHeaderRenderer;
 
     if (hdr) {
       name = hdr.title?.runs?.[0]?.text ?? name;
 
-      // Monthly listeners if available (e.g. "12,345,678 monthly listeners")
-      const listeners = hdr.monthlyListenerCount?.runs?.[0]?.text;
+      // Monthly listeners — different renderers store it in different fields
+      const listeners = hdr.monthlyListenerCount?.runs?.[0]?.text
+                     ?? hdr.subtitle?.runs?.find(r => /listener/i.test(r.text))?.text;
       if (listeners) subtitle = listeners;
 
       // Thumbnail — artist banners are landscape, force wsrv.nl center-crop
-      const thumbs = hdr.thumbnail?.musicThumbnailRenderer?.thumbnail?.thumbnails;
+      const thumbs = hdr.thumbnail?.musicThumbnailRenderer?.thumbnail?.thumbnails
+                  ?? hdr.foregroundThumbnail?.musicThumbnailRenderer?.thumbnail?.thumbnails;
       const rawUrl = pickThumb(thumbs);
       if (rawUrl) {
         try {
@@ -398,7 +411,7 @@ function buildResponse({ ogTitle, ogDescription, ogImage, ogType, deepLink, page
     const status = document.getElementById('status');
     const deep   = ${JSON.stringify(deepLink)};
 
-    btn.addEventListener('click', function() {
+    function tryOpen() {
       const start = Date.now();
       window.location.href = deep;
       setTimeout(function() {
@@ -406,7 +419,13 @@ function buildResponse({ ogTitle, ogDescription, ogImage, ogType, deepLink, page
           status.textContent = "Snowify doesn\u2019t seem to be installed \u2014 download it below.";
         }
       }, 1500);
-    });
+    }
+
+    // Auto-open on page load
+    tryOpen();
+
+    // Also allow manual retry
+    btn.addEventListener('click', tryOpen);
   </script>
 </body>
 </html>`;
