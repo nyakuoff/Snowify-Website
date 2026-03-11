@@ -1,0 +1,9 @@
+name = "snowify-links"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+routes = [
+  { pattern = "snowify.cc/track/*",  zone_name = "snowify.cc" },
+  { pattern = "snowify.cc/album/*",  zone_name = "snowify.cc" },
+  { pattern = "snowify.cc/artist/*", zone_name = "snowify.cc" }
+]
