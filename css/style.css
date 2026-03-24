@@ -177,6 +177,24 @@ img {
   display: none !important;
 }
 
+.nav-donate {
+  padding: 8px 16px;
+  background: var(--accent-glow);
+  border-radius: var(--radius-md);
+  color: var(--accent) !important;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.nav-donate:hover {
+  background: var(--accent-glow-strong);
+  color: var(--accent-hover) !important;
+}
+
+.nav-donate::after {
+  display: none !important;
+}
+
 /* Mobile nav toggle */
 .nav-toggle {
   display: none;
